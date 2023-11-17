@@ -6,8 +6,7 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 
-public class FamilyTree
-{
+public class FamilyTree {
     
     private static class TreeNode
     {
@@ -33,6 +32,8 @@ public class FamilyTree
         {
             // Add childNode to this node's children list. Also
             // set childNode's parent to this node.
+        	childNode.parent = this;
+        	children.add(childNode);
         }
         
         
@@ -41,16 +42,17 @@ public class FamilyTree
         TreeNode getNodeWithName(String targetName)
         {
             // Does this node have the target name?
-            if (?????)
+            if (this.name.equals(targetName)) {
                 return this;
-                    
+            }
             // No, recurse. Check all children of this node.
             for (TreeNode child: children)
-            {
+            	if (child.name.equals(targetName)) {
+            		return child;
+            	}
+           
                 // If child.getNodeWithName(targetName) returns a non-null node,
                 // then that's the node we're looking for. Return it.
-            }
-            
             // Not found anywhere.
             return null;
         }
@@ -58,9 +60,13 @@ public class FamilyTree
         
         // Returns a list of ancestors of this TreeNode, starting with this node’s parent and
         // ending with the root. Order is from recent to ancient.
-        ArrayList<TreeNode> collectAncestorsToList()
-        {
+        ArrayList<TreeNode> collectAncestorsToList() {
             ArrayList<TreeNode> ancestors = new ArrayList<>();
+            TreeNode parent = this.parent;
+            while (parent != null) {
+            	ancestors.add(parent);
+            	parent = parent.parent;
+            }
 
             // ?????  Collect ancestors of this TreeNode into the array list. HINT: going up
             // the nodes of a tree is like traversing a linked list. If that isn’t clear,
@@ -93,8 +99,8 @@ public class FamilyTree
 	//
 	// Displays a file browser so that user can select the family tree file.
 	//
-	public FamilyTree() throws IOException, TreeException
-	{
+	public FamilyTree() throws IOException, TreeException {
+	
 		// User chooses input file. This block doesn't need any work.
 		FileNameExtensionFilter filter = 
 			new FileNameExtensionFilter("Family tree text files", "txt");
@@ -109,8 +115,8 @@ public class FamilyTree
 
 		// Parse the input file. Create a FileReader that reads treeFile. Create a BufferedReader
 		// that reads from the FileReader.
-		FileReader fr = ???
-		BufferedReader br = ???
+		FileReader fr = new FileReader(treeFile);
+		BufferedReader br = new BufferedReader(fr);
 		String line;
 		while ((line = br.readLine()) != null)
 			addLine(line);
